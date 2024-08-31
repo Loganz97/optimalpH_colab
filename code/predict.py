@@ -10,6 +10,7 @@ from sklearn.exceptions import InconsistentVersionWarning
 import os
 import sys
 from pathlib import Path
+import torch
 
 filepath = Path(__file__).resolve().parent
 esm_code = filepath.parent.joinpath("esm_embeddings/ml")
@@ -31,6 +32,11 @@ def predict(
 ) -> None:
 
     try:
+        # Force CUDA device if available
+        if torch.cuda.is_available():
+            torch.cuda.set_device(0)
+            print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
+        
         # load model
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
