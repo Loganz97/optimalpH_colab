@@ -1,6 +1,6 @@
 # OptimalpH-Colab: Predict Optimal pH for Enzyme Activity
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]([https://colab.research.google.com/github/Loganz97/optimalpH_colab/blob/main/OptimalpH-Colab.ipynb](https://colab.research.google.com/drive/1HE5B2Oy82zmgLyB4lhPOly-JPJKfT4A9?usp=sharing))
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HE5B2Oy82zmgLyB4lhPOly-JPJKfT4A9?usp=sharing))
 
 ## Introduction
 
