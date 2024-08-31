@@ -50,7 +50,7 @@ def prepare_batches(sequences, max_tokens_per_batch):
 
     return batches
 
-def get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per_batch=10000, use_cuda=True):
+def get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per_batch=10000):
     model.eval()
     batches = prepare_batches(sequences, max_tokens_per_batch)
     data = [(i, s) for i, s in enumerate(sequences)]
@@ -59,13 +59,13 @@ def get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per
         data, collate_fn=batch_converter, batch_sampler=batches
     )
 
-    if use_cuda and torch.cuda.is_available():
-        device = torch.device('cuda')
-    else:
-        device = torch.device('cpu')
-    model.to(device)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
 
     print(f"Embeddings will be calculated with device: {device}")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"CUDA device: {torch.cuda.get_device_name(0)}")
 
     embeddings = np.zeros(shape=(len(data), 1280))
     with torch.no_grad():
