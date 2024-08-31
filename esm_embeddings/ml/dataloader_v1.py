@@ -2,7 +2,12 @@ import pandas as pd
 import numpy as np
 
 import torch
-import esm
+try:
+    import esm
+except ImportError:
+    print("Error: ESM module not found. Please install it using 'pip install fair-esm' or 'pip install git+https://github.com/facebookresearch/esm.git'")
+    sys.exit(1)
+
 import fire
 
 from scipy.special import softmax
@@ -17,8 +22,16 @@ from time import time
 import argparse
 import os
 
+try:
+    from fairscale.nn.data_parallel import FullyShardedDataParallel as FSDP
+    from fairscale.nn.wrap import enable_wrap, wrap
+except ImportError:
+    print("Warning: fairscale not found. FSDP functionality will not be available.")
+
 from fairscale.nn.data_parallel import FullyShardedDataParallel as FSDP
 from fairscale.nn.wrap import enable_wrap, wrap
+
+
 
 def load_esm_model_v2():
     url = "tcp://localhost:23456"
@@ -56,14 +69,17 @@ def load_esm_model_v2():
     return model, batch_converter
 
 def load_esm_model():
+    try:
+        token_map = {'L': 0, 'A': 1, 'G': 2, 'V': 3, 'S': 4, 'E': 5, 'R': 6, 'T': 7, 'I': 8, 'D': 9, 'P': 10,
+                     'K': 11, 'Q': 12, 'N': 13, 'F': 14, 'Y': 15, 'M': 16, 'H': 17, 'W': 18, 'C': 19}
 
-    token_map = {'L': 0, 'A': 1, 'G': 2, 'V': 3, 'S': 4, 'E': 5, 'R': 6, 'T': 7, 'I': 8, 'D': 9, 'P': 10,
-             'K': 11, 'Q': 12, 'N': 13, 'F': 14, 'Y': 15, 'M': 16, 'H': 17, 'W': 18, 'C': 19}
+        t_model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
+        batch_converter = alphabet.get_batch_converter()
 
-    t_model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
-    batch_converter = alphabet.get_batch_converter()
-
-    return t_model,batch_converter
+        return t_model, batch_converter
+    except Exception as e:
+        print(f"Error loading ESM model: {str(e)}")
+        raise
 
 def prepare_batches(sequences, max_tokens_per_batch):
 
@@ -172,17 +188,45 @@ def get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per
 
     return embeddings
 
-def PCA_reduction(embeddings_train, embeddings_test, n=32):
-    reduction = PCA(n_components=n)
-    reduction.fit(embeddings_train)
-    return reduction.transform(embeddings_test)
+def PCA_reduction(embeddings_train, embeddings_test, variance_threshold=0.99):
+    # Initialize PCA without specifying the number of components
+    pca = PCA()
+    
+    # Fit PCA on the training data
+    pca.fit(embeddings_train)
+    
+    # Calculate the cumulative explained variance ratio
+    cumulative_variance_ratio = np.cumsum(pca.explained_variance_ratio_)
+    
+    # Find the number of components that explain at least 99% of the variance
+    n_components = np.argmax(cumulative_variance_ratio >= variance_threshold) + 1
+    
+    print(f"Number of PCA components for {variance_threshold*100}% variance: {n_components}")
+    
+    # Create a new PCA object with the determined number of components
+    pca_final = PCA(n_components=n_components)
+    pca_final.fit(embeddings_train)
+    
+    # Transform both training and test data
+    embeddings_train_reduced = pca_final.transform(embeddings_train)
+    embeddings_test_reduced = pca_final.transform(embeddings_test)
+    
+    return embeddings_train_reduced, embeddings_test_reduced, pca_final
 
-def process_dataset(df):
-    model, batch_converter = load_esm_model()
-    sequences = df['sequence'].values
-    y = df['mean_pH'].values
-    embeddings = get_esm_embeddings_batched(sequences, model, batch_converter)
-    return embeddings, y
+def process_dataset(df, batch_size=64):
+    try:
+        model, batch_converter = load_esm_model()
+        sequences = df['sequence'].values
+        y = df['mean_pH'].values
+        embeddings = get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per_batch=batch_size*1000)
+        
+        # Perform PCA reduction
+        embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
+        
+        return embeddings_reduced, y, pca_model
+    except Exception as e:
+        print(f"Error processing dataset: {str(e)}")
+        raise
 
 def main(input_csv, seq_col, target_col, output_emb):
 
