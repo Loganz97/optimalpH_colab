@@ -7,8 +7,8 @@ import fire
 
 from scipy.special import softmax
 from scipy.stats import entropy
-from sklearn.decomposition import PCA
-
+# from sklearn.decomposition import PCA
+# 
 import gc
 
 from tqdm import tqdm
@@ -86,32 +86,33 @@ def get_esm_embeddings_batched(sequences, model, batch_converter, max_tokens_per
 
     return embeddings
 
-def PCA_reduction(embeddings_train, embeddings_test, variance_threshold=0.99):
-    pca = PCA()
-    pca.fit(embeddings_train)
-    
-    cumulative_variance_ratio = np.cumsum(pca.explained_variance_ratio_)
-    n_components = np.argmax(cumulative_variance_ratio >= variance_threshold) + 1
-    
-    print(f"Number of PCA components for {variance_threshold*100}% variance: {n_components}")
-    
-    pca_final = PCA(n_components=n_components)
-    pca_final.fit(embeddings_train)
-    
-    embeddings_train_reduced = pca_final.transform(embeddings_train)
-    embeddings_test_reduced = pca_final.transform(embeddings_test)
-    
-    return embeddings_train_reduced, embeddings_test_reduced, pca_final
+# Remove PCA reduction for now but might be interesting to use for a clustering scheme to visualize model labeled embeddings
+#def PCA_reduction(embeddings_train, embeddings_test, variance_threshold=0.99):
+#    pca = PCA()
+#    pca.fit(embeddings_train)
+#    
+#    cumulative_variance_ratio = np.cumsum(pca.explained_variance_ratio_)
+#    n_components = np.argmax(cumulative_variance_ratio >= variance_threshold) + 1
+#    
+#    print(f"Number of PCA components for {variance_threshold*100}% variance: {n_components}")
+#    
+#    pca_final = PCA(n_components=n_components)
+#    pca_final.fit(embeddings_train)
+#    
+#    embeddings_train_reduced = pca_final.transform(embeddings_train)
+#    embeddings_test_reduced = pca_final.transform(embeddings_test)
+#    
+#    return embeddings_train_reduced, embeddings_test_reduced, pca_final
 
 def process_dataset(df):
     model, batch_converter = load_esm_model()
     sequences = df['Sequence'].values
     embeddings = get_esm_embeddings_batched(sequences, model, batch_converter)
     
-    # Perform PCA reduction
-    embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
+    # Perform PCA reduction (might be useful for clustering)
+    #embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
     
-    return embeddings_reduced, pca_model
+    #return embeddings_reduced, pca_model
 
 def main(input_csv, seq_col, output_emb):
     df = pd.read_csv(input_csv)
@@ -125,8 +126,8 @@ def main(input_csv, seq_col, output_emb):
 
     print(f"Time elapsed: {finish - start}")
 
-    # Perform PCA reduction
-    embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
+    # Perform PCA reduction (might be useful for clustering)
+    # embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
 
     X = np.zeros(len(embeddings_reduced),
                  dtype=[('X', 'f4', (embeddings_reduced.shape[1],))])
