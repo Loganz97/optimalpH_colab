@@ -47,7 +47,7 @@ def predict(
         df = pd.read_csv(input_csv)
 
         # Process dataset
-        embeddings, _ = process_dataset(df[[seq_col]])
+        embeddings = process_dataset(df[[seq_col]])
 
         # make predictions
         predictions = model.predict(embeddings)
