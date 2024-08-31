@@ -4,20 +4,19 @@ channels:
   - defaults
 dependencies:
   - python=3.10
-  - numpy
   - pandas
+  - numpy
   - scikit-learn
   - xgboost
   - pytorch
-  - torchvision
-  - tqdm
-  - requests
-  - pyyaml
+  - cudatoolkit
   - biopython
+  - fire
   - pip
   - pip:
+    - huggingface_hub
+    - cudf
+    - condacolab
     - fair-esm==2.0.0
     - fairscale==0.4.13
     - fsspec==2024.2.0
-    - fire
-    - huggingface_hub
