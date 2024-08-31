@@ -76,8 +76,8 @@ If you prefer to run the tool locally:
 
 2. Create a conda environment:
    ```
-   conda create -n esm_env --file package-list.txt
-   conda activate esm_env
+   conda create --file environment.yml
+   conda activate optimalpH
    ```
 
 3. Run the prediction script:
