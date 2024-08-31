@@ -15,7 +15,6 @@ dependencies:
   - pip
   - pip:
     - huggingface_hub
-    - cudf
     - fair-esm==2.0.0
     - fairscale==0.4.13
-    - fsspec==2024.2.0
+    - fsspec
