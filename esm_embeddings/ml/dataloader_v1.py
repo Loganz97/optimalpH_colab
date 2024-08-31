@@ -108,6 +108,9 @@ def process_dataset(df):
     model, batch_converter = load_esm_model()
     sequences = df['Sequence'].values
     embeddings = get_esm_embeddings_batched(sequences, model, batch_converter)
+
+    #would need to modify this if adding clustering
+    return embeddings
     
     # Perform PCA reduction (might be useful for clustering)
     #embeddings_reduced, _, pca_model = PCA_reduction(embeddings, embeddings)
