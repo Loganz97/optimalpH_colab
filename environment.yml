@@ -20,3 +20,4 @@ dependencies:
     - fairscale==0.4.13
     - fsspec==2024.2.0
     - fire
+    - huggingface_hub
