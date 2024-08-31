@@ -1,0 +1,21 @@
+name: optimalpH
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy
+  - pandas
+  - scikit-learn
+  - xgboost
+  - pytorch
+  - torchaudio
+  - torchvision
+  - tqdm
+  - requests
+  - pyyaml
+  - pip
+  - pip:
+    - fair-esm==2.0.0
+    - fairscale==0.4.13
+    - fsspec==2024.2.0
