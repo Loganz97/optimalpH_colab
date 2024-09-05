@@ -12,7 +12,7 @@ The notebook utilizes ESM-2-650M protein language model embeddings developed by 
 
 This notebook provides a user-friendly interface for predicting a collection of metrics that aid in the expression, purification, and screening of hydrolases created by **Logan Hessefort** ([LinkedIn](https://www.linkedin.com/in/logan-hessefort/)).
 
-This project was created as part of a **US Department of Energy SCGSR Fellowship** ([details](https://science.osti.gov/wdts/scgsr)) at the National Renewable Energy Laboratory with additional support from the **US National Science Foundation** ([grant](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2132183&HistoricalAwards=false)).
+This project was created as part of a **US Department of Energy SCGSR Award** ([details](https://science.osti.gov/wdts/scgsr)) at the National Renewable Energy Laboratory with additional support from the **US National Science Foundation** ([grant](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2132183&HistoricalAwards=false)).
 
 ### Training Data
 
