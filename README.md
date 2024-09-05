@@ -40,7 +40,7 @@ Example format:
 | ID       | Sequence       |
 |:--------:|:--------------:|
 | Protein1 | MVKPKLFYV...   |
-| Protein2 | MGSRHYPLG...   |
+| Protein2 | MGSRHYASS...   |
 
 **Note:** Ensure all sequences are valid amino acid sequences using single-letter codes.
 
