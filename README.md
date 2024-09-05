@@ -1,18 +1,18 @@
 ![OptimalpHColab_Colab](https://github.com/user-attachments/assets/fabef7a7-30ab-4245-b355-c235214b0f0b)
 
-# OptimalpH-Colab: Predict Optimal pH for Enzyme Activity
+# OptimalpH-Colab: Predict Optimal pH for Hydrolase Activity
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HE5B2Oy82zmgLyB4lhPOly-JPJKfT4A9?usp=sharing)
 
 ## Introduction
 
-OptimalpH is a tool designed to predict the optimal pH range for enzyme activity using machine learning models. This Google Colab notebook allows for batch processing of protein sequences to predict the pH range where enzymes exhibit maximum catalytic activity.
+OptimalpH is a tool designed to predict the optimal pH range for hydrolase activity using machine learning models. This Google Colab notebook allows for batch processing of protein sequences to predict the pH range where hydrolases exhibit maximum catalytic activity.
 
-The notebook utilizes ESM-2-650M protein language model embeddings developed by Meta AI Research and trains machine learning models including KNN, XGBoost, and K-mers.
+The model utilizes ESM-2-650M protein language model embeddings developed by Meta AI Research and trains machine learning models including KNN, XGBoost, and K-mers using embeddings labeled with optimal pH data and organismal optimal growth data.
 
 ### Author Information
 
-This notebook provides a user-friendly interface for predicting a collection of metrics that aid in the expression, purification, and screening of hydrolases created by **Logan Hessefort** ([LinkedIn](https://www.linkedin.com/in/logan-hessefort/)).
+This notebook is a user-friendly interface for predicting a collection of metrics that aid in the expression, purification, and screening of hydrolases created by **Logan Hessefort** ([LinkedIn](https://www.linkedin.com/in/logan-hessefort/)).
 
 This project was created as part of a **US Department of Energy SCGSR Award** ([details](https://science.osti.gov/wdts/scgsr)) at the National Renewable Energy Laboratory with additional support from the **US National Science Foundation** ([grant](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2132183&HistoricalAwards=false)).
 
