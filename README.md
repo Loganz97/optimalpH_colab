@@ -68,7 +68,6 @@ The script generates a comprehensive CSV file containing:
 - **Instability Index**: Estimates protein stability in vitro (≤40 predicted as stable, >40 as unstable).
 
 ## Local Installation
-
 If you prefer to run the tool locally:
 
 1. Clone the repository:
@@ -84,13 +83,23 @@ If you prefer to run the tool locally:
 
 3. Run the prediction script:
    ```
-   python3 code/predict.py --input_csv sequences.csv --seq_col sequence --model_fname weights/model_xgboost --output_csv sequences_scored.csv
+   python3 code/predict.py --input_csv sequences.csv --model model_xgboost
+   ```
+
+   This will use default settings and save the output in the current directory.
+
+   For more options:
+   ```
+   python3 code/predict.py --help
+   ```
+
+   You can specify custom column names or output file:
+   ```
+   python3 code/predict.py --input_csv sequences.csv --model model_xgboost --output_csv results.csv --id_col ProteinID --seq_col ProteinSequence
    ```
 
 ## Citation and Acknowledgment
-
 This tool is based on the research presented in the paper "Approaching Optimal pH Enzyme Prediction with Large Language Models" by Mark Zaretckii, Pavel Buslaev, Igor Kozlovskii, Alexander Morozov, and Petr Popov. The original paper can be accessed [here](https://doi.org/10.1021/acssynbio.4c00465).
 
 ## Issues and Questions
-
 For any issues or questions, please open an issue in this GitHub repository.
